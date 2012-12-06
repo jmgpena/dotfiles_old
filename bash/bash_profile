@@ -1,53 +1,11 @@
-# LC
+# load common environment variables
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-# Bash completion
+# try to load local environment
+if [ -r ~/.profile ]; then . ~/.profile; fi
 
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-    . $(brew --prefix)/etc/bash_completion
-fi
-
-# prompt
-shopt -s promptvars
-prompt_git() {
-    git branch &>/dev/null || return 1
-    HEAD="$(git symbolic-ref HEAD 2>/dev/null)"
-    BRANCH="${HEAD##*/}"
-    [[ -n "$(git status 2>/dev/null | \
-        grep -F 'working directory clean')" ]] || STATUS="!"
-    printf '(git:%s)' "${BRANCH:-unknown}${STATUS}"
-}
-prompt_hg() {
-    hg branch &>/dev/null || return 1
-    BRANCH="$(hg branch 2>/dev/null)"
-    [[ -n "$(hg status 2>/dev/null)" ]] && STATUS="!"
-    printf '(hg:%s)' "${BRANCH:-unknown}${STATUS}"
-}
-prompt_svn() {
-    svn info &>/dev/null || return 1
-    URL="$(svn info 2>/dev/null | \
-        awk -F': ' '$1 == "URL" {print $2}')"
-    ROOT="$(svn info 2>/dev/null | \
-        awk -F': ' '$1 == "Repository Root" {print $2}')"
-    BRANCH=${URL/$ROOT}
-    BRANCH=${BRANCH#/}
-    BRANCH=${BRANCH#branches/}
-    BRANCH=${BRANCH%%/*}
-    [[ -n "$(svn status 2>/dev/null)" ]] && STATUS="!"
-    printf '(svn:%s)' "${BRANCH:-unknown}${STATUS}"
-}
-prompt_vcs() {
-    prompt_git || prompt_svn || prompt_hg
-}
-prompt_jobs() {
-    [[ -n "$(jobs)" ]] && printf '{%d}' $(jobs | sed -n '$=')
-}
-
-prompt_on() {
-    PS1='[\[\e[34m\]\h\[\e[0m\]]$(prompt_vcs)$(prompt_jobs):\w\n\$ '
-}
-prompt_off() {
-    PS1='\$'
-}
-prompt_on
+# if this is an interactive shell load bashrc
+case "$-" in *i*)
+        if [ -r ~/.bashrc ]; then . ~/.bashrc; fi;;
+esac
