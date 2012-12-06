@@ -1,7 +1,9 @@
 # Bash completion
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-    . $(brew --prefix)/etc/bash_completion
-fi
+if [[ "$OSTYPE" =~ ^darwin ]]; then
+    if [ -f $(brew --prefix)/etc/bash_completion ]; then
+        . $(brew --prefix)/etc/bash_completion
+    fi;
+fi;
 
 # prompt
 shopt -s promptvars
@@ -46,3 +48,6 @@ prompt_off() {
     PS1='\$'
 }
 prompt_on
+
+# load aliases
+source ~/.dotfiles/bash/aliases

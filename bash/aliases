@@ -1,0 +1,23 @@
+# Bash aliases
+
+alias reload='. ~/.bashrc'
+
+# general commands
+alias h='history'
+alias e='exit'
+alias md='mkdir -p'
+
+# top
+alias tu='top -o cpu'
+alias tm='top -o vsize'
+
+# ls
+if [[ "$OSTYPE" =~ ^darwin ]]; then
+    alias ls='command ls -G'
+else
+    alias ls='command ls --color'
+fi
+
+# git
+alias g='git status'
+alias gp='git push'
