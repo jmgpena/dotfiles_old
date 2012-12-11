@@ -21,3 +21,7 @@ fi
 # git
 alias g='git status'
 alias gp='git push'
+
+# emacs
+alias me='emacs -nw -Q'
+alias sme='sudo emacs -nw -Q'
