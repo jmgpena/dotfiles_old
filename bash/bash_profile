@@ -1,9 +1,7 @@
+# -*- mode: shell-script -*-
 # load common environment variables
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
-
-# try to load local environment
-if [ -r ~/.profile ]; then . ~/.profile; fi
 
 # if this is an interactive shell load bashrc
 case "$-" in *i*)
