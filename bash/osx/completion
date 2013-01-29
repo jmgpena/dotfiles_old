@@ -10,3 +10,8 @@ if which brew >/dev/null 2>&1; then
     . `brew --prefix`/Library/Contributions/brew_bash_completion.sh
   fi
 fi
+
+# git completion
+if [ -f /usr/share/git-core/git-completion.bash ]; then
+    source /usr/share/git-core/git-completion.bash;
+fi
