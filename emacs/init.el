@@ -109,18 +109,31 @@ By Xah Lee"
   (with-current-buffer
       (url-retrieve-synchronously
        "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
-    (let (el-get-master-branch)
-      (goto-char (point-max))
-      (eval-print-last-sexp))))
+    (goto-char (point-max))
+    (eval-print-last-sexp)))
 
 (setq el-get-sources
       '((:name el-get)
-        (:name smartparens)
+        (:name dash
+               :description "A modern list api for Emacs. No 'cl required."
+               :type github
+               :pkgname "magnars/dash.el")
+        (:name smartparens
+               :description "Autoinsert pairs of defined brackets and wrap regions"
+               :type github
+               :pkgname "Fuco1/smartparens"
+               :depends dash)
         (:name smex)
         (:name org-plus-contrib
                :type elpa :repo ("org" . "http://orgmode.org/elpa/"))
         (:name magit :type elpa)
-        (:name solarized-theme)
+        (:name sass-mode)
+        (:name php-mode)
+        (:name solarized-theme
+               :type github
+               :pkgname "sellout/emacs-color-theme-solarized"
+               :description "Solarized themes for Emacs"
+               :prepare (add-to-list 'custom-theme-load-path default-directory))
         ))
 
 (setq my:el-get-packages (mapcar 'el-get-source-name el-get-sources))
