@@ -1,5 +1,5 @@
 # -*- mode: shell-script -*-
-
+export CCL_DEFAULT_DIRECTORY=/Applications/Clozure\ CL.app/Contents/MacOS
 export NODE_PATH=/usr/local/lib/node
 
 PATH=$PATH:/usr/local/share/npm/bin
