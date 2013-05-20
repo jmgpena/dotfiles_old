@@ -132,6 +132,10 @@ By Xah Lee"
         (:name less-css-mode
                :type github
                :pkgname "purcell/less-css-mode")
+        (:name lilypond-mode
+               :type github
+               :pkgname "jmgpena/lilypond-mode"
+               :prepare (load "lilypond-init"))
         (:name solarized-theme
                :type github
                :pkgname "sellout/emacs-color-theme-solarized"
@@ -157,3 +161,10 @@ By Xah Lee"
 ; switch buffer
 (global-set-key (kbd "C-x C-b") 'ido-switch-buffer)
 (global-set-key (kbd "C-x B") 'ibuffer)
+
+;; system specific configs
+(setq jmgpena-sysinit-file
+      (concat (fullpath-relative-to-current-file "opt/")
+              (symbol-name system-type) ".el"))
+(when (file-exists-p jmgpena-sysinit-file)
+  (load jmgpena-sysinit-file))
