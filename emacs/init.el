@@ -129,6 +129,9 @@ By Xah Lee"
         (:name magit :type elpa)
         (:name sass-mode)
         (:name php-mode)
+        (:name less-css-mode
+               :type github
+               :pkgname "purcell/less-css-mode")
         (:name solarized-theme
                :type github
                :pkgname "sellout/emacs-color-theme-solarized"

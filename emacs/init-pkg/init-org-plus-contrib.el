@@ -161,7 +161,9 @@
   (setq org-confirm-babel-evaluate nil))
 
 (setq org-latex-listings 'minted)
-(add-to-list 'org-latex-packages-alist '("" "minted"))
+(unless (boundp 'org-latex-default-packages-alist)
+  (setq org-latex-default-packages-alist nil))
+(add-to-list 'org-latex-default-packages-alist '("" "minted"))
 (setq org-latex-hyperref-format "\\ref{%s}")
 (setq org-latex-minted-options
            '(("frame" "lines")
