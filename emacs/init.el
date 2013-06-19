@@ -136,6 +136,7 @@ By Xah Lee"
                :type github
                :pkgname "jmgpena/lilypond-mode"
                :prepare (load "lilypond-init"))
+        (:name web-mode)
         (:name solarized-theme
                :type github
                :pkgname "sellout/emacs-color-theme-solarized"
