@@ -137,6 +137,12 @@ By Xah Lee"
                :pkgname "jmgpena/lilypond-mode"
                :prepare (load "lilypond-init"))
         (:name web-mode)
+        (:name jade-mode
+               :type github
+               :pkgname "brianc/jade-mode")
+        (:name handlebars-mode
+               :type github
+               :pkgname "danielevans/handlebars-mode")
         (:name solarized-theme
                :type github
                :pkgname "sellout/emacs-color-theme-solarized"
