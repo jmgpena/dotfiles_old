@@ -1,4 +1,5 @@
 ;; osx specific config
+(setenv "TMPDIR" "/tmp")
 (push "/usr/local/bin" exec-path)
 (push "usr/texbin" exec-path)
 (setq mac-command-modifier 'super)

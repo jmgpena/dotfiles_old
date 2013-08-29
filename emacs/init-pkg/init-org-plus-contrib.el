@@ -140,13 +140,12 @@
       ad-do-it))
 
   ;; Org Mobile
-  (setq org-mobile-directory "~/Dropbox/MobileOrg")
+  (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
   (setq org-mobile-inbox-for-pull "~/Dropbox/org/inbox.org")
   (setq org-mobile-files '("~/Dropbox/org/inbox.org"
-			   "~/Dropbox/org/action.plan.org"
-			   "~/Dropbox/org/dailylog.org"
-			   "~/Dropbox/org/info.jmp.org"
-			   "~/Dropbox/org/info.mop.org"))
+                           "~/Dropbox/org/wip.org"
+                           "~/Dropbox/org/ref.org"
+                           ))
 
   ;; Org Babel
   (setq org-ditaa-jar-path "~/Dropbox/config/emacs/ditaa.jar")

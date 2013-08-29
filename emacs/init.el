@@ -23,13 +23,19 @@
 (setq-default indicate-empty-lines t)
 (setq visible-bell t)
 (setq mouse-yank-at-point t)
-(setq-default ediff-window-setup-function 'ediff-setup-windows-plain)
 (line-number-mode 1)   ; show line numberes on modeline
 (column-number-mode 1) ; and also columns
 (global-hl-line-mode) ; highlight current line
 ;;(global-linum-mode 1) ; show line numbers on the left
 ;; if there are no unsaved changes revert buffers automagically
 (global-auto-revert-mode 1)
+;; uniquify filenames
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'post-forward)
+;; saveplace (save last place on file)
+(require 'saveplace)
+(setq-default save-place t)
+(setq save-place-file "~/.emacs.d/saved-places")
 
 ;; navigate windows with M-<arrows>
 (windmove-default-keybindings 'meta)
@@ -136,13 +142,18 @@ By Xah Lee"
                :type github
                :pkgname "jmgpena/lilypond-mode"
                :prepare (load "lilypond-init"))
-        (:name web-mode)
+        (:name web-mode
+               :description "emacs major mode for editing PHP/JSP/ASP HTML 
+                             templates (with embedded CSS and JS blocks)"
+               :type github
+               :pkgname "fxbois/web-mode")
         (:name jade-mode
                :type github
                :pkgname "brianc/jade-mode")
         (:name handlebars-mode
                :type github
                :pkgname "danielevans/handlebars-mode")
+        (:name rvm)
         (:name solarized-theme
                :type github
                :pkgname "sellout/emacs-color-theme-solarized"
@@ -168,6 +179,12 @@ By Xah Lee"
 ; switch buffer
 (global-set-key (kbd "C-x C-b") 'ido-switch-buffer)
 (global-set-key (kbd "C-x B") 'ibuffer)
+
+; ediff
+(setq ediff-split-window-function (if (> (frame-width) 150)
+                                      'split-window-horizontally
+                                      'split-window-vertically))
+
 
 ;; system specific configs
 (setq jmgpena-sysinit-file
