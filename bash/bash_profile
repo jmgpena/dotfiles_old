@@ -5,5 +5,5 @@ export LANG=en_US.UTF-8
 
 # if this is an interactive shell load bashrc
 case "$-" in *i*)
-        if [ -r ~/.bashrc ]; then . ~/.bashrc; fi;;
+        if [ -r ${HOME}/.bashrc ]; then . ${HOME}/.bashrc; fi;;
 esac

@@ -1,1 +1,2 @@
 # -*- mode: shell-script -*-
+eval "$(fasd --init auto)"
