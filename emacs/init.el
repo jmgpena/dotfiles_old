@@ -106,6 +106,10 @@ By Xah Lee"
   (concat (file-name-directory (or load-file-name buffer-file-name))
           file-relative-path))
 
+;; configure extra elpa archives
+(require 'package)
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+(package-initialize t)
 ;; el-get configuration
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
 (setq el-get-user-package-directory
@@ -115,8 +119,9 @@ By Xah Lee"
   (with-current-buffer
       (url-retrieve-synchronously
        "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
-    (goto-char (point-max))
-    (eval-print-last-sexp)))
+    (let (el-get-master-branch)
+      (goto-char (point-max))
+      (eval-print-last-sexp))))
 
 (setq el-get-sources
       '((:name el-get)
@@ -142,8 +147,8 @@ By Xah Lee"
                :type github
                :pkgname "jmgpena/lilypond-mode"
                :prepare (load "lilypond-init"))
-        (:name web-mode
-               :description "emacs major mode for editing PHP/JSP/ASP HTML 
+        (:name web-modeec
+               :description "emacs major mode for editing PHP/JSP/ASP HTML
                              templates (with embedded CSS and JS blocks)"
                :type github
                :pkgname "fxbois/web-mode")
@@ -154,11 +159,21 @@ By Xah Lee"
                :type github
                :pkgname "danielevans/handlebars-mode")
         (:name rvm)
-        (:name solarized-theme
+        (:name solarized-emacs
                :type github
-               :pkgname "sellout/emacs-color-theme-solarized"
+               :pkgname "bbatsov/solarized-emacs"
                :description "Solarized themes for Emacs"
                :prepare (add-to-list 'custom-theme-load-path default-directory))
+        (:name flycheck
+               :type github
+               :pkgname "flycheck/flycheck"
+               :description "On-the-fly syntax checking extension"
+               :build ("cd doc && makeinfo flycheck.texi")
+               :info "./doc"
+               :depends (s dash cl-lib f pkg-info))
+        (:name :guru-mode
+               :type github
+               :pkgname "bbatsov/guru-mode")
         ))
 
 (setq my:el-get-packages (mapcar 'el-get-source-name el-get-sources))
@@ -180,11 +195,40 @@ By Xah Lee"
 (global-set-key (kbd "C-x C-b") 'ido-switch-buffer)
 (global-set-key (kbd "C-x B") 'ibuffer)
 
+; guru mode
+(guru-global-mode +1)
+
 ; ediff
 (setq ediff-split-window-function (if (> (frame-width) 150)
                                       'split-window-horizontally
                                       'split-window-vertically))
 
+;; move to beginning of line
+(defun prelude-move-beginning-of-line (arg)
+  "Move point back to indentation of beginning of line.
+
+Move point to the first non-whitespace character on this line.
+If point is already there, move to the beginning of the line.
+Effectively toggle between the first non-whitespace character and
+the beginning of the line.
+
+If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+point reaches the beginning or end of the buffer, stop there."
+  (interactive "^p")
+  (setq arg (or arg 1))
+
+  ;; Move lines first
+  (when (/= arg 1)
+    (let ((line-move-visual nil))
+      (forward-line (1- arg))))
+
+  (let ((orig-point (point)))
+    (back-to-indentation)
+    (when (= orig-point (point))
+      (move-beginning-of-line 1))))
+
+(global-set-key [remap move-beginning-of-line]
+                'prelude-move-beginning-of-line)
 
 ;; system specific configs
 (setq jmgpena-sysinit-file

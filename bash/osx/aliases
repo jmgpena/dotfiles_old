@@ -34,3 +34,10 @@ alias hax="growlnotify -a 'Activity Monitor' 'System error' -m 'WTF R U DOIN'"
 
 # Emacs
 alias emacs="/usr/local/Cellar/emacs/24.3/Emacs.app/Contents/MacOS/Emacs -nw"
+alias ec="/usr/local/bin/emacsclient -s /Users/jpena/.emacs.d/server/server -c"
+
+# Vagrant on port 80 via firewall
+alias v80="sudo ipfw add 100 fwd 127.0.0.1, 8080 tcp from any to any 80 in"
+
+# ios simulators
+alias iphone="open /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Applications/iPhone\ Simulator.app"
