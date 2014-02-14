@@ -8,7 +8,7 @@ esac
 
 # detect running system
 case "$OSTYPE" in
-  darwin*)  system="osx" ;; 
+  darwin*)  system="osx" ;;
   linux*)   system="linux" ;;
   *)        system="other" ;;
 esac
@@ -58,6 +58,8 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+# disable flow control
+stty -ixon
 
 #[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
