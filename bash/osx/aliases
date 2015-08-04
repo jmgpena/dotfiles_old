@@ -33,11 +33,14 @@ alias pumpitup="osascript -e 'set volume 10'"
 alias hax="growlnotify -a 'Activity Monitor' 'System error' -m 'WTF R U DOIN'"
 
 # Emacs
-alias emacs="/usr/local/Cellar/emacs/24.3/Emacs.app/Contents/MacOS/Emacs -nw"
+alias emacs="/usr/local/Cellar/emacs/24.5/Emacs.app/Contents/MacOS/Emacs -nw"
 alias ec="/usr/local/bin/emacsclient -s /Users/jpena/.emacs.d/server/server -c"
 
 # Vagrant on port 80 via firewall
-alias v80="sudo ipfw add 100 fwd 127.0.0.1, 8080 tcp from any to any 80 in"
+#alias fw80="sudo ipfw add 100 fwd 127.0.0.1, 8080 tcp from any to any 80 in"
+#alias fw80off="sudo ipfw delete 100"
+alias fw80="echo 'rdr pass on lo0 inet proto tcp from any to any port {80,8080} -> 127.0.0.1 port 8080' | sudo pfctl -ef - > /dev/null 2>&1; echo '==> Forwarding Port: 80 -> 8080 & Enabling pf'"
+alias fw80off="sudo pfctl -df /etc/pf.conf > /dev/null 2>&1; echo '==> Removing Port Forwarding & Disabling pf'"
 
 # ios simulators
 alias iphone="open /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Applications/iPhone\ Simulator.app"
