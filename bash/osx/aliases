@@ -33,7 +33,7 @@ alias pumpitup="osascript -e 'set volume 10'"
 alias hax="growlnotify -a 'Activity Monitor' 'System error' -m 'WTF R U DOIN'"
 
 # Emacs
-alias emacs="/usr/local/Cellar/emacs/24.5/Emacs.app/Contents/MacOS/Emacs -nw"
+#alias emacs="/usr/local/Cellar/emacs/24.5/Emacs.app/Contents/MacOS/Emacs -nw"
 alias ec="/usr/local/bin/emacsclient -s /Users/jpena/.emacs.d/server/server -c"
 
 # Vagrant on port 80 via firewall
