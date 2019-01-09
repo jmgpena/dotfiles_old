@@ -1,7 +1,12 @@
 # -*- mode: shell-script -*-
+$include /etc/inputrc
 
+set colored-stats on
 # complete ignoring case
 set completion-ignore-case on
+
+# show prefix for completion only with 3 chars or less, show ... for bigger
+set completion-prefix-display-length 3
 
 # List all matches in case multiple possible completions are possible
 set show-all-if-ambiguous on
@@ -13,6 +18,8 @@ set mark-symlinked-directories on
 # commands (i.e. more intelligent Up/Down behavior)
 "\e[B": history-search-forward
 "\e[A": history-search-backward
+Control-n: history-search-forward
+Control-p: history-search-backward
 
 # Do not autocomplete hidden files unless the pattern explicitly begins with a dot
 set match-hidden-files off
@@ -22,6 +29,7 @@ set page-completions off
 
 # Immediately show all possible completions
 set show-all-if-ambiguous on
+set show-all-if-unmodified on
 
 # If there are more than 200 possible completions for a word, ask to show them all
 set completion-query-items 200
