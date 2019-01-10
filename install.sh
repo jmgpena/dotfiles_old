@@ -17,3 +17,6 @@ linkDotfile ~/.dotfiles/bash/bashrc ~/.bashrc
 
 # tmux
 linkDotfile ~/.dotfiles/tmux.conf ~/.tmux.conf
+
+# vim
+linkDotfile ~/.dotfiles/vimrc ~/.vimrc
