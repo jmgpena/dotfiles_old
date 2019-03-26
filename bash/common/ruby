@@ -1,0 +1,4 @@
+# -*- mode: shell-script -*-
+
+# add user ruby gems path to PATH
+PATH="$PATH:$(ruby -e 'puts Gem.user_dir')/bin"
