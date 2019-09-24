@@ -110,3 +110,4 @@ if [ -f ${HOME}/.bash_local ]; then
 fi;
 
 export EDITOR='vim'
+

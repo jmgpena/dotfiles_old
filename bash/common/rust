@@ -1,0 +1,4 @@
+# -*- mode: shell-script -*-
+
+# add user cargo/bin to path
+PATH="$PATH:$HOME/.cargo/bin"
