@@ -1,15 +1,4 @@
 # -*- mode: shell-script -*-
-# load common environment variables
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
+# This is run for login shells
 
-# if this is an interactive shell load bashrc
-case "$-" in *i*)
-        if [ -r ${HOME}/.bashrc ]; then . ${HOME}/.bashrc; fi;;
-esac
-
-# opam configuration
-test -r /home/jmgpena/.opam/opam-init/init.sh && . /home/jmgpena/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
-
-export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="$HOME/.nimble/bin:$PATH"
+if [ -r ${HOME}/.bashrc ]; then . ${HOME}/.bashrc; fi

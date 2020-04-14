@@ -1,82 +1,44 @@
 # -*- mode: shell-script -*-
-
-# If not running interactively, don't do anything
-case $- in
-    *i*) ;;
-      *) return;;
-esac
-
+# Base environment variables
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
 # common setup
-
-# Prevent file overwrite on stdout redirection
+set -o noclobber # Prevent file overwrite on stdout redirection
 # Use `>|` to force redirection to an existing file
-set -o noclobber
-
-# Update window size after every command
-shopt -s checkwinsize
-
-# Automatically trim long paths in the prompt (requires Bash 4.x)
-PROMPT_DIRTRIM=2
-
-# Enable history expansion with space
-# E.g. typing !!<space> will replace the !! with your last command
-# bind Space:magic-space
-
-# Turn on recursive globbing (enables ** to recurse all directories)
-shopt -s globstar 2> /dev/null
-
-# Case-insensitive globbing (used in pathname expansion)
-shopt -s nocaseglob;
-
+shopt -s checkwinsize # Update window size after every command
+shopt -s globstar 2> /dev/null # Turn on recursive globbing (enables ** to recurse all directories)
+shopt -s nocaseglob; # Case-insensitive globbing (used in pathname expansion)
 ## SANE HISTORY DEFAULTS ##
-
-# Append to the history file, don't overwrite it
-shopt -s histappend
-
-# Save multi-line commands as one command
-shopt -s cmdhist
-
-# Record each line as it gets issued
-PROMPT_COMMAND='history -a'
-
-# Huge history. Doesn't appear to slow things down, so why not?
-HISTSIZE=500000
+shopt -s histappend # Append to the history file, don't overwrite it
+shopt -s cmdhist # Save multi-line commands as one command
+PROMPT_COMMAND='history -a' # Record each line as it gets issued
+HISTSIZE=500000 # Huge history. Doesn't appear to slow things down, so why not?
 HISTFILESIZE=100000
-
-# Avoid duplicate entries
-HISTCONTROL="erasedups:ignoreboth"
-
-# Don't record some commands
-export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
-
-# Use standard ISO 8601 timestamp
+HISTCONTROL="erasedups:ignoreboth" # Avoid duplicate entries
+export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear" # Don't record some commands
+HISTTIMEFORMAT='%F %T ' # Use standard ISO 8601 timestamp
 # %F equivalent to %Y-%m-%d
 # %T equivalent to %H:%M:%S (24-hours format)
-HISTTIMEFORMAT='%F %T '
 
 ## BETTER DIRECTORY NAVIGATION ##
-
-# Prepend cd to directory names automatically
-shopt -s autocd 2> /dev/null
-# Correct spelling errors during tab-completion
-shopt -s dirspell 2> /dev/null
-# Correct spelling errors in arguments supplied to cd
-shopt -s cdspell 2> /dev/null
-
+shopt -s autocd 2> /dev/null # Prepend cd to directory names automatically
+shopt -s dirspell 2> /dev/null # Correct spelling errors during tab-completion
+shopt -s cdspell 2> /dev/null # Correct spelling errors in arguments supplied to cd
 # This defines where cd looks for targets
 # Add the directories you want to have fast access to, separated by colon
 # Ex: CDPATH=".:~:~/projects" will look for targets in the current working directory, in home and in the ~/projects folder
 CDPATH="."
 
+PROMPT_DIRTRIM=2 # Automatically trim long paths in the prompt (requires Bash 4.x)
+
 # This allows you to bookmark your favorite places across the file system
 # Define a variable containing a path and you will be able to cd into it regardless of the directory you're in
 shopt -s cdable_vars
-
-# Examples:
-export dotfiles="$HOME/.dotfiles"
+# locations
+export dotf="$HOME/.dotfiles"
 export p5="$HOME/p5"
-# export documents="$HOME/Documents"
 export dropbox="$HOME/Dropbox"
+export sync="$HOME/Sync"
 
 # ls color config
 export LS_COLORS='no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:'
@@ -87,27 +49,129 @@ export LS_COLORS='no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40
 # disable flow control
 stty -ixon
 
-# detect running system
-case "$OSTYPE" in
-  darwin*)  system="osx" ;;
-  linux*)   system="linux" ;;
-  *)        system="other" ;;
-esac
+# pyenv setup
+if command -v pyenv 1>/dev/null 2>&1; then
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+    export PYENV_ROOT="$HOME/.pyenv"
+fi
 
-# load all common modules
-for f in ~/.dotfiles/bash/common/*; do
-    source $f;
-done
+# PHP Composer setup
+if [ -d "${HOME}/.config/composer/vendor/bin" ]; then
+    export PATH=${PATH}:~/.config/composer/vendor/bin
+fi
 
-# load specific system modules
-for f in ~/.dotfiles/bash/${system}/*; do
-    source $f;
-done
+# add user cargo/bin to path
+PATH="$PATH:$HOME/.cargo/bin"
 
-# load local stuff if the file exists
-if [ -f ${HOME}/.bash_local ]; then
-    source ${HOME}/.bash_local
-fi;
+# Activate nvm
+# This works in archlinux if you install nvm from AUR
+if [ -e /usr/share/nvm/init-nvm.sh ]; then
+    source /usr/share/nvm/init-nvm.sh
+fi
+# global/npm/yarn
+export PATH="$HOME/.node_modules/bin:$PATH"
+# local bin path
+export PATH="$PATH:~/.local/bin"
 
-export EDITOR='vim'
+# TODO
+# use gitstatus.sh and check the code here: https://github.com/magicmonty/bash-git-prompt/blob/master/gitprompt.sh
+# Setup the shell prompt
+shopt -s promptvars # enable promptvars
+# get git repository information
+# TODO maybe just check if .git exists before calling git?
+# TODO add validation/warning in case git not installed or available
+prompt_git() {
+    git branch &>/dev/null || return 1
+    HEAD="$(git symbolic-ref HEAD 2>/dev/null)"
+    BRANCH="${HEAD##*/}"
+    [[ -n "$(git status 2>/dev/null | \
+        grep -F 'working directory clean')" ]] || STATUS="!"
+    printf '[ %s ]' "${BRANCH:-unknown}${STATUS}"
+}
+prompt_hg() {
+    hg branch &>/dev/null || return 1
+    BRANCH="$(hg branch 2>/dev/null)"
+    [[ -n "$(hg status 2>/dev/null)" ]] && STATUS="!"
+    printf '(hg:%s)' "${BRANCH:-unknown}${STATUS}"
+}
+prompt_svn() {
+    svn info &>/dev/null || return 1
+    URL="$(svn info 2>/dev/null | \
+        awk -F': ' '$1 == "URL" {print $2}')"
+    ROOT="$(svn info 2>/dev/null | \
+        awk -F': ' '$1 == "Repository Root" {print $2}')"
+    BRANCH=${URL/$ROOT}
+    BRANCH=${BRANCH#/}
+    BRANCH=${BRANCH#branches/}
+    BRANCH=${BRANCH%%/*}
+    [[ -n "$(svn status 2>/dev/null)" ]] && STATUS="!"
+    printf '(svn:%s)' "${BRANCH:-unknown}${STATUS}"
+}
+prompt_vcs() {
+    prompt_git #|| prompt_svn || prompt_hg
+}
+prompt_jobs() {
+    [[ -n "$(jobs)" ]] && printf '{%d}' $(jobs | sed -n '$=')
+}
 
+prompt_on() {
+    PS1='[\[\e[34m\]\h\[\e[0m\]]$(prompt_jobs):\w $(prompt_vcs)\n\$ '
+}
+prompt_off() {
+    PS1='\$'
+}
+prompt_on
+
+# Aliases
+# Easier navigation: .., ...
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias reload='. ~/.bashrc' # reload config
+# general commands
+alias h='history'
+alias e='exit'
+alias md='mkdir -p'
+# ls
+# Detect which `ls` flavor is in use
+if ls --color > /dev/null 2>&1; then # GNU `ls`
+	  colorflag="--color"
+else # OS X (and BSD?) `ls`
+	  colorflag="-G"
+fi
+# always use color
+alias ls="ls ${colorflag}"
+alias ll='ls -alhF'
+# List all files colorized in long format
+alias l="ls -lh ${colorflag}"
+# List all files colorized in long format, including dot files
+alias la="ls -la ${colorflag}"
+# List only directories
+alias lsd='ls -l | grep "^d"'
+# `cat` with beautiful colors. requires Pygments installed.
+# 							   sudo easy_install Pygments
+alias c='pygmentize -O style=monokai -f console256 -g'
+# grep
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias rg='rg -i'
+# GIT STUFF
+alias g='git status'
+alias gp='git push'
+# git root
+alias gr='[ ! -z `git rev-parse --show-cdup` ] && cd `git rev-parse --show-cdup || pwd`'
+# docker useful alias
+alias dl="docker ps -l -q"
+alias dkd="docker run -d -P" # run container daemonized
+alias dki="docker run -i -t -P" # run container interactive
+alias dex="docker exec -i -t"
+alias dcu="docker-compose up -d"
+alias dcd="docker-compose down"
+alias dcr="docker-compose restart"
+alias dcl="docker-compose logs -f"
+alias dce="docker-compose exec"
+# docker cleanup stuff
+alias drmc="docker rm $(docker ps --all -q -f status=exited)"
+alias drmid="docker rmi $(docker images -q -f dangling=true)"

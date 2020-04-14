@@ -1,3 +1,0 @@
-# -*- mode: shell-script -*-
-
-PATH="$PATH:~/.nimble/bin"
